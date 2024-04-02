@@ -11,7 +11,7 @@ OPNSENSE_KEY = "supersecretkey"
 OPNSENSE_SECRET = "supersecretsecret"
 
 # The full hostname to update on Cloudflare with the currently-active IP
-TARGET_URL = "myservice.mydomain.com"
+TARGET_HOSTNAME = "myservice.mydomain.com"
 
 # The zone you're editing on CF -- usually this is just the domain portion of the hostname above
 CLOUDFLARE_ZONE = "mydomain.com"

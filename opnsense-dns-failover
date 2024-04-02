@@ -83,20 +83,20 @@ def update_dns(ip):
             e("Could not retrieve DNS zone for domain")
             return False
         zone_id = zones[0]['id']
-        dns_records = cf.zones.dns_records.get(zone_id, params={'name':TARGET_URL, 'type':'A'})
+        dns_records = cf.zones.dns_records.get(zone_id, params={'name':TARGET_HOSTNAME, 'type':'A'})
         if not dns_records:
             e("Could not find existing record in zone")
             return False
         record_id = dns_records[0]['id']
         d(f"DNS Record\n:{dns_records[0]}")
         new_record = {
-            'name' : TARGET_URL,
+            'name' : TARGET_HOSTNAME,
             'type' : 'A',
             'content' : ip,
             'proxied' : False
         }
         cf.zones.dns_records.put(zone_id, record_id, data=new_record)
-        l(f"Updated CF record for {TARGET_URL} to IP {ip}")
+        l(f"Updated CF record for {TARGET_HOSTNAME} to IP {ip}")
         return True
     except Exception as e:
         e(f"update_dns got exception: \n{e}")
