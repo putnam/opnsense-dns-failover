@@ -78,7 +78,7 @@ def update_dns(ip):
         return False
     try:
         cf = CloudFlare.CloudFlare(token=CLOUDFLARE_TOKEN)
-        zones = cf.zones.get(params={'name':'mantup.com'})
+        zones = cf.zones.get(params={'name':CLOUDFLARE_ZONE})
         if not zones:
             e("Could not retrieve DNS zone for domain")
             return False
