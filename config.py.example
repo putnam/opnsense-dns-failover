@@ -1,0 +1,31 @@
+# If you are concerned about the OPNSense key or secret being leaked over the network, use ACME + a static FQDN for your router
+SSL_VERIFY=True
+
+# Time between each check
+SLEEP = 60
+
+# API Key and Secret generated for your OPNSense user -- create a new user and give it only these perms:
+#   - Dashboard (all)
+#   - Status: Interfaces
+OPNSENSE_KEY = "supersecretkey"
+OPNSENSE_SECRET = "supersecretsecret"
+
+# The full hostname to update on Cloudflare with the currently-active IP
+TARGET_URL = "myservice.mydomain.com"
+
+# Cloudflare API token, which only needs Zone Edit permissions for the specific FQDN you're using
+CLOUDFLARE_TOKEN = "supersecretCFtoken"
+
+# Hostname to the router, used so SSL works
+ROUTER_HOSTNAME = "myrouter.mylocal.net"
+
+# List the primary and secondary interfaces here and their respective gateway names in OPNSense
+CONFIG = {
+    'primary_interface' : 'WAN1',
+    'primary_gateway' : 'WAN1_DHCP',
+    'secondary_interface' : 'WAN2',
+    'secondary_gateway' : 'WAN2_DHCP',
+}
+
+# Enable for debug output
+DEBUG = False
