@@ -55,7 +55,7 @@ def opnsense_get_gateways():
         return False
 
 def opnsense_get_interfaces():
-    r = requests.get(f"https://{ROUTER_IP}/api/interfaces/overview/interfacesInfo", auth=(OPNSENSE_KEY,OPNSENSE_SECRET), verify=False)
+    r = requests.get(f"https://{ROUTER_HOSTNAME}/api/interfaces/overview/interfacesInfo", auth=(OPNSENSE_KEY,OPNSENSE_SECRET), verify=False)
     interfaces = r.json()['rows']
     d(f"Interfaces obj: {interfaces}")
     return interfaces
