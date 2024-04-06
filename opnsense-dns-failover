@@ -50,11 +50,12 @@ def opnsense_get_gateways():
         d(f"Gateways obj: {gateways}")
         return gateways
 
-    except:
+    except Exception as exc:
+        e(exc)
         return False
 
 def opnsense_get_interfaces():
-    r = requests.get(f"https://{ROUTER_HOSTNAME}/api/interfaces/overview/interfacesInfo", auth=(OPNSENSE_KEY,OPNSENSE_SECRET), verify=False)
+    r = requests.get(f"https://{ROUTER_HOSTNAME}/api/interfaces/overview/interfacesInfo", auth=(OPNSENSE_KEY,OPNSENSE_SECRET), verify=SSL_VERIFY)
     interfaces = r.json()['rows']
     d(f"Interfaces obj: {interfaces}")
     return interfaces
@@ -105,6 +106,7 @@ def update_dns(ip):
 def get_gateway_state():
     gateways = opnsense_get_gateways()
     if not gateways:
+        e("No gateways from opnsense?")
         raise Exception("No gateways from OPNsense")
 
     primary_found = False
