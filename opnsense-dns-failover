@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 import json
-import requests
-import CloudFlare
+from cloudflare import Cloudflare
 import time
 import ipaddress
 from datetime import datetime
-
 from config import *
+import requests
 
 # Sample of output from opnsense gateway status endpoint
 """
@@ -77,17 +76,17 @@ def update_dns(ip):
         e(f"update_dns called with empty IP")
         return False
     try:
-        cf = CloudFlare.CloudFlare(token=CLOUDFLARE_TOKEN)
-        zones = cf.zones.get(params={'name':CLOUDFLARE_ZONE})
+        cf = Cloudflare(api_token=CLOUDFLARE_TOKEN)
+        zones = cf.zones.list(name=CLOUDFLARE_ZONE).result
         if not zones:
             e("Could not retrieve DNS zone for domain")
             return False
-        zone_id = zones[0]['id']
-        dns_records = cf.zones.dns_records.get(zone_id, params={'name':TARGET_HOSTNAME, 'type':'A'})
+        zone_id = zones[0].id
+        dns_records = cf.dns.records.list(zone_id=zone_id, name=TARGET_HOSTNAME, type='A').result
         if not dns_records:
-            e("Could not find existing record in zone")
+            e("Could not find existing DNS record in zone; make it first")
             return False
-        record_id = dns_records[0]['id']
+        record_id = dns_records[0].id
         d(f"DNS Record\n:{dns_records[0]}")
         new_record = {
             'name' : TARGET_HOSTNAME,
@@ -95,7 +94,7 @@ def update_dns(ip):
             'content' : ip,
             'proxied' : False
         }
-        cf.zones.dns_records.put(zone_id, record_id, data=new_record)
+        cf.dns.records.update(zone_id=zone_id, dns_record_id=record_id, name=TARGET_HOSTNAME, content=ip, type='A')
         l(f"Updated CF record for {TARGET_HOSTNAME} to IP {ip}")
         return True
     except Exception as e:
