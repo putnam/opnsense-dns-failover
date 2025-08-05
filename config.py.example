@@ -4,9 +4,9 @@ SSL_VERIFY=True
 # Time between each check
 SLEEP = 60
 
-# API Key and Secret generated for your OPNSense user -- create a new user and give it only these perms:
-#   - Dashboard (all)
+# API Key and Secret generated for your OPNSense user -- create a new user and give it only these privileges:
 #   - Status: Interfaces
+#   - System: Gateways
 OPNSENSE_KEY = "supersecretkey"
 OPNSENSE_SECRET = "supersecretsecret"
 
